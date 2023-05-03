@@ -28,6 +28,8 @@ from torchvision.models.video import r3d_18, mc3_18, r2plus1d_18
 
 import paths
 
+from multisys.utils.global_variables import DEVICE
+
 class Passthrough(nn.Module):
     def __init__(self):
         super(Passthrough, self).__init__()
@@ -689,7 +691,7 @@ def get_feature_model(args):
             "airsim_dorsalnet_batch2_model.ckpt-3174400-2021-02-12 02-03-29.666899.pt"
         )
         path = os.path.join(args.ckpt_root, ckpt_path)
-        checkpoint = torch.load(path)
+        checkpoint = torch.load(path, map_location=DEVICE)
 
         subnet_dict = extract_subnet_dict(checkpoint)
 
@@ -735,7 +737,7 @@ def get_feature_model(args):
             network=network_names[ckpt_id],
             pred_step=3,
         )
-        checkpoint = torch.load(os.path.join(args.ckpt_root, ckpt_path))
+        checkpoint = torch.load(os.path.join(args.ckpt_root, ckpt_path), map_location=DEVICE)
         subnet_dict = extract_subnet_dict(checkpoint["state_dict"])
 
         valid_idx = [0, 1, 2, 4, 6, 8, 10, 12]
