@@ -1,7 +1,7 @@
-from paths import DERIVED_DATA
-from modelzoo import xception, separable_net, gabor_pyramid, dorsalnet, decoder
-from loaders import airsim
-from models import extract_subnet_dict
+from dorsal_resnet.paths import DERIVED_DATA
+from dorsal_resnet.modelzoo import xception, separable_net, gabor_pyramid, dorsalnet, decoder
+from dorsal_resnet.loaders import airsim
+from dorsal_resnet.models import extract_subnet_dict
 
 import argparse
 import datetime
@@ -22,11 +22,11 @@ from torchvision import transforms
 import torchvision.models as models
 import torch.nn.functional as F
 
-from transforms import ThreedGaussianBlur, ThreedExposure
+from dorsal_resnet.transforms import ThreedGaussianBlur, ThreedExposure
 
 import wandb
 
-from paths import *
+from dorsal_resnet.paths import *
 
 
 def get_all_layers(net, prefix=[]):
@@ -287,19 +287,22 @@ def main(args):
     running_loss = 0.0
     try:
         for epoch in range(args.num_epochs):  # loop over the dataset multiple times
-            for data in trainloader:
+            for data in trainloader: 
                 net.train()
 
                 # get the inputs; data is a list of [inputs, labels]
+                # X.shape = (batch_size, C, timesteps, H, W) = (64, 3, 10, 112, 112)
+                # X.max = 225, X.min = 0, X.mean ~ 120, X.std ~ 77
+                # labels.shape = (batch_size, 5), (vx, vy, vz, yaw, pitch) 
                 X, labels = data
                 X, labels = X.to(device), labels.to(device)
 
                 optimizer.zero_grad()
 
                 # zero the parameter gradients
-                X = train_transform(X)
-                X = subnet(X)
-                outputs = net(X)
+                X = train_transform(X) # shape still the same, max = 2.60, min = -2.24, mean = 0, std = 1
+                X = subnet(X) # shape now = (64, 64, 10, 28, 28)
+                outputs = net(X) # outputs.shape = (64, 72, 5)
 
                 loss = loss_fun(outputs, labels)
 

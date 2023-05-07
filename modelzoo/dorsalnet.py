@@ -154,8 +154,8 @@ class DorsalNet(nn.Module):
         self.conv1 = self.s1.conv1  # Visualize weights
 
     def forward(self, x):
-        x0 = self.s1(x)
-        x1 = self.res0(x0)
+        x0 = self.s1(x) # batch_size, C, timesteps, H, W = (64, 3, 10, 112, 112)
+        x1 = self.res0(x0) # C --> 32, H --> 28, W == 28
         x2 = self.res1(x1)
         x3 = self.res2(x2)
         x4 = self.res3(x3)
@@ -163,7 +163,7 @@ class DorsalNet(nn.Module):
         # Add two types of features together
         self.concat(torch.cat((x0, x4), dim=1))
 
-        x = self.dropout(x4)
+        x = self.dropout(x4) # (64, 64, 10, 28, 28)
 
         return x
 

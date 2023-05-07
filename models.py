@@ -12,11 +12,11 @@ import sys
 import tables
 from tqdm import tqdm
 
-from loaders import pvc4, pvc1, mt2, mst
-from modelzoo import gabor_pyramid, separable_net
-from modelzoo.motionnet import MotionNet
-from modelzoo.shiftnet import ShiftNet
-from modelzoo.dorsalnet import DorsalNet
+from dorsal_resnet.loaders import pvc4, pvc1, mt2, mst
+from dorsal_resnet.modelzoo import gabor_pyramid, separable_net
+from dorsal_resnet.modelzoo.motionnet import MotionNet
+from dorsal_resnet.modelzoo.shiftnet import ShiftNet
+from dorsal_resnet.modelzoo.dorsalnet import DorsalNet
 
 import torch
 from torch import nn
@@ -26,7 +26,7 @@ from torchvision.models.resnet import resnet18
 from torchvision.models.vgg import vgg19
 from torchvision.models.video import r3d_18, mc3_18, r2plus1d_18
 
-import paths
+import dorsal_resnet.paths
 
 from multisys.utils.global_variables import DEVICE
 
