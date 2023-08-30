@@ -737,7 +737,7 @@ def get_feature_model(args):
             network=network_names[ckpt_id],
             pred_step=3,
         )
-        checkpoint = torch.load(os.path.join(args.ckpt_root, ckpt_path))
+        checkpoint = torch.load(os.path.join(args.ckpt_root, ckpt_path), map_location=DEVICE)
         subnet_dict = extract_subnet_dict(checkpoint["state_dict"])
 
         valid_idx = [0, 1, 2, 4, 6, 8, 10, 12]

@@ -132,16 +132,17 @@ class AirSim(torch.utils.data.Dataset):
             if self.nt == 40:
                 X_ = f.get_node("/videos")[:].squeeze()
             else:
-                X_ = f.get_node("/short_videos")[:].squeeze()
-
+                X_ = f.get_node("/short_videos")[:].squeeze() 
+            # X_.shape = (3600, 10, 3, 112, 112) = (trials, timesteps, C, H, W), max = 255
             f.close()
 
             cache[self.nt][tgt["images_path"]] = X_
 
         X_ = cache[self.nt][tgt["images_path"]]
-        X_ = X_[tgt["idx"], :].astype(np.float32)
+        X_ = X_[tgt["idx"], :].astype(np.float32) # --> shape = (timesteps, C, H, W)
         # The images are natively different sizes, grayscale.
-        return (X_.transpose((1, 0, 2, 3)), tgt["labels"])
+        # tgt.shape = (5,) for vx, vy, vz, yaw, pitch. e.g. array([64, 60, 68, 68, 27], dtype=int64)
+        return (X_.transpose((1, 0, 2, 3)), tgt["labels"]) # --> X_.shape = (C, timesteps, H, W) = (3, 10, 112, 112)
 
     def __len__(self):
         # Returns the length of a dataset
