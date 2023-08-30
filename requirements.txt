@@ -12,4 +12,6 @@ wandb
 GPUtil
 tensorboard
 git+https://github.com/patrickmineault/research_code.git
-git+https://github.com/greentfrapp/lucent.git
+# NOTE KZ: replaced link below with package name torch-lucent
+# git+https://github.com/greentfrapp/lucent.git
+torch-lucent

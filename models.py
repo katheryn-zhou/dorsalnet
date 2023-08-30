@@ -12,11 +12,13 @@ import sys
 import tables
 from tqdm import tqdm
 
-from loaders import pvc4, pvc1, mt2, mst
-from modelzoo import gabor_pyramid, separable_net
-from modelzoo.motionnet import MotionNet
-from modelzoo.shiftnet import ShiftNet
-from modelzoo.dorsalnet import DorsalNet
+from multisys.utils.global_variables import DEVICE
+
+from dorsalnet.loaders import pvc4, pvc1, mt2, mst
+from dorsalnet.modelzoo import gabor_pyramid, separable_net
+from dorsalnet.modelzoo.motionnet import MotionNet
+from dorsalnet.modelzoo.shiftnet import ShiftNet
+from dorsalnet.modelzoo.dorsalnet import DorsalNet
 
 import torch
 from torch import nn
@@ -26,7 +28,7 @@ from torchvision.models.resnet import resnet18
 from torchvision.models.vgg import vgg19
 from torchvision.models.video import r3d_18, mc3_18, r2plus1d_18
 
-import paths
+import dorsalnet.paths
 
 class Passthrough(nn.Module):
     def __init__(self):
@@ -689,7 +691,7 @@ def get_feature_model(args):
             "airsim_dorsalnet_batch2_model.ckpt-3174400-2021-02-12 02-03-29.666899.pt"
         )
         path = os.path.join(args.ckpt_root, ckpt_path)
-        checkpoint = torch.load(path)
+        checkpoint = torch.load(path, map_location=DEVICE)
 
         subnet_dict = extract_subnet_dict(checkpoint)
 
