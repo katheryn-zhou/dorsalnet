@@ -1,6 +1,6 @@
-from modelzoo import xception, separable_net, gabor_pyramid, dorsalnet, decoder
-from loaders import airsim
-from models import extract_subnet_dict
+from dorsalnet.modelzoo import xception, separable_net, gabor_pyramid, dorsalnet, decoder
+from dorsalnet.loaders import airsim
+from dorsalnet.models import extract_subnet_dict
 
 import argparse
 import datetime
@@ -21,9 +21,9 @@ from torchvision import transforms
 import torchvision.models as models
 import torch.nn.functional as F
 
-import models
+import dorsalnet.models
 
-from transforms import ThreedGaussianBlur, ThreedExposure
+from dorsalnet.transforms import ThreedGaussianBlur, ThreedExposure
 
 import wandb
 
