@@ -5,7 +5,7 @@ python-dict-wrapper
 scipy
 seaborn
 scikit-image
-scikit-learn
+sklearn
 tables
 tqdm
 wandb
